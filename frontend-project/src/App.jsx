@@ -14,6 +14,7 @@ import StockIn from "./pages/StockIn";
 import StockOut from "./pages/StockOut";
 import Reports from "./pages/Reports";
 import Layout from "./components/Layout";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -81,6 +82,7 @@ function App() {
           <Route path="reports" element={<Reports />} />
         </Route>
       </Routes>
+      <Toaster position="top-right" />
     </Router>
   );
 }
