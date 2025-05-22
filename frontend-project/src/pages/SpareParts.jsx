@@ -67,7 +67,7 @@ const SpareParts = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="flex flex-col space-y-2">
@@ -80,7 +80,7 @@ const SpareParts = () => {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="flex flex-col space-y-2">
@@ -93,7 +93,7 @@ const SpareParts = () => {
                   value={formData.quantity}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="flex flex-col space-y-2">
@@ -107,11 +107,11 @@ const SpareParts = () => {
                   value={formData.unit_price}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
             </div>
-            <div className="flex flex-col space-y-2 mt-4">
+            <div className="flex flex-col space-y-2  mt-2mt-4">
               <button type="submit" className="btn btn-primary">Add Part</button>
             </div>
           </form>

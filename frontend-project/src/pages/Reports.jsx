@@ -85,7 +85,7 @@ const Reports = () => {
                 <DatePicker
                   selected={date}
                   onChange={date => setDate(date)}
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
             </div>

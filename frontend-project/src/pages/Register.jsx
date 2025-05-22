@@ -46,7 +46,7 @@ const Register = ({ setAuth }) => {
                 value={username}
                 onChange={onChange}
                 required
-                className="input input-bordered"
+                className="input input-bordered w-full"
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -59,7 +59,7 @@ const Register = ({ setAuth }) => {
                 value={password}
                 onChange={onChange}
                 required
-                className="input input-bordered"
+                className="input input-bordered w-full"
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -72,10 +72,10 @@ const Register = ({ setAuth }) => {
                 value={confirmPassword}
                 onChange={onChange}
                 required
-                className="input input-bordered"
+                className="input input-bordered w-full"
               />
             </div>
-            <div className="flex flex-col space-y-2 mt-6">
+            <div className="flex flex-col space-y-2  mt-2mt-6">
               <button type="submit" className="btn btn-primary">Register</button>
             </div>
           </form>

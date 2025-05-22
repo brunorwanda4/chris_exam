@@ -42,10 +42,10 @@ const Login = ({ setAuth }) => {
                 value={username}
                 onChange={onChange}
                 required
-                className="input input-bordered"
+                className="input input-bordered w-full"
               />
             </div>
-            <div className="flex flex-col space-y-2 ">
+            <div className="flex flex-col space-y-2  mt-2">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
@@ -55,10 +55,10 @@ const Login = ({ setAuth }) => {
                 value={password}
                 onChange={onChange}
                 required
-                className="input input-bordered"
+                className="input input-bordered w-full"
               />
             </div>
-            <div className="flex flex-col space-y-2 mt-6">
+            <div className="flex flex-col space-y-2  mt-2mt-6">
               <button type="submit" className="btn btn-primary">Login</button>
             </div>
           </form>

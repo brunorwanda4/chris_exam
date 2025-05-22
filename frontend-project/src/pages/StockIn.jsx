@@ -93,7 +93,7 @@ const StockIn = () => {
                   value={formData.quantity}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="flex flex-col space-y-2">
@@ -106,11 +106,11 @@ const StockIn = () => {
                   value={formData.date}
                   onChange={handleChange}
                   required
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                 />
               </div>
             </div>
-            <div className="flex flex-col space-y-2 mt-4">
+            <div className="flex flex-col space-y-2  mt-2mt-4">
               <button type="submit" className="btn btn-primary">Add Stock In</button>
             </div>
           </form>
