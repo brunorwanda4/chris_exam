@@ -24,23 +24,23 @@ const pool = mysql.createPool({
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 // Middleware to verify JWT
-const authenticate = async (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
-  if (!token) return res.status(401).json({ error: "Access denied" });
+// const authenticate = async (req, res, next) => {
+//   const token = req.header("Authorization")?.replace("Bearer ", "");
+//   if (!token) return res.status(401).json({ error: "Access denied" });
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const [users] = await pool.query("SELECT * FROM users WHERE id = ?", [
-      decoded.id,
-    ]);
-    if (users.length === 0) throw new Error();
+//   try {
+//     const decoded = jwt.verify(token, JWT_SECRET);
+//     const [users] = await pool.query("SELECT * FROM users WHERE id = ?", [
+//       decoded.id,
+//     ]);
+//     if (users.length === 0) throw new Error();
 
-    req.user = users[0];
-    next();
-  } catch (error) {
-    res.status(401).json({ error: "Invalid token" });
-  }
-};
+//     req.user = users[0];
+//     next();
+//   } catch (error) {
+//     res.status(401).json({ error: "Invalid token" });
+//   }
+// };
 
 // Routes
 // User registration
@@ -88,16 +88,16 @@ app.post("/api/login", async (req, res) => {
 });
 
 // Spare Parts CRUD
-app.get("/api/spare-parts", authenticate, async (req, res) => {
+app.get("/api/spare-parts", async (_, res) => {
   try {
     const [spareParts] = await pool.query("SELECT * FROM spare_parts");
     res.json(spareParts);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: error.message || "Server error" });
   }
 });
 
-app.post("/api/spare-parts", authenticate, async (req, res) => {
+app.post("/api/spare-parts", async (req, res) => {
   try {
     const { name, category, quantity, unit_price } = req.body;
     const [result] = await pool.query(
@@ -111,7 +111,7 @@ app.post("/api/spare-parts", authenticate, async (req, res) => {
 });
 
 // Stock In
-app.get("/api/stock-in", authenticate, async (req, res) => {
+app.get("/api/stock-in", async (_, res) => {
   try {
     const query = `
             SELECT si.*, sp.name as spare_part_name 
@@ -121,11 +121,11 @@ app.get("/api/stock-in", authenticate, async (req, res) => {
     const [stockIn] = await pool.query(query);
     res.json(stockIn);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: error.message || "Server error" });
   }
 });
 
-app.post("/api/stock-in", authenticate, async (req, res) => {
+app.post("/api/stock-in", async (req, res) => {
   try {
     const { spare_part_id, quantity, date } = req.body;
 
@@ -160,7 +160,7 @@ app.post("/api/stock-in", authenticate, async (req, res) => {
 });
 
 // Stock Out
-app.get("/api/stock-out", authenticate, async (req, res) => {
+app.get("/api/stock-out", async (_, res) => {
   try {
     const query = `
             SELECT so.*, sp.name as spare_part_name 
@@ -170,11 +170,11 @@ app.get("/api/stock-out", authenticate, async (req, res) => {
     const [stockOut] = await pool.query(query);
     res.json(stockOut);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: error.message || "Server error" });
   }
 });
 
-app.post("/api/stock-out", authenticate, async (req, res) => {
+app.post("/api/stock-out", async (req, res) => {
   try {
     const { spare_part_id, quantity, unit_price, date } = req.body;
 
@@ -224,7 +224,7 @@ app.post("/api/stock-out", authenticate, async (req, res) => {
 });
 
 // Reports
-app.get("/api/reports/daily-stock-out", authenticate, async (req, res) => {
+app.get("/api/reports/daily-stock-out", async (req, res) => {
   try {
     const { date } = req.query;
     const query = `
@@ -240,7 +240,7 @@ app.get("/api/reports/daily-stock-out", authenticate, async (req, res) => {
   }
 });
 
-app.get("/api/reports/stock-status", authenticate, async (req, res) => {
+app.get("/api/reports/stock-status", async (_, res) => {
   try {
     const query = `
             SELECT 
@@ -261,7 +261,7 @@ app.get("/api/reports/stock-status", authenticate, async (req, res) => {
     const [status] = await pool.query(query);
     res.json(status);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: error.message || "Server error" });
   }
 });
 
