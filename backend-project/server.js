@@ -224,62 +224,65 @@ app.post("/api/stock-out", async (req, res) => {
 });
 
 // Update stock out
-app.put('/api/stock-out/:id', authenticate, async (req, res) => {
+app.put("/api/stock-out/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { spare_part_id, quantity, unit_price, date } = req.body;
-    
+
     // Start transaction
     const conn = await pool.getConnection();
     await conn.beginTransaction();
-    
+
     try {
       // Get the original stock out record
       const [originalRecords] = await conn.query(
-        'SELECT * FROM stock_out WHERE id = ? FOR UPDATE',
+        "SELECT * FROM stock_out WHERE id = ? FOR UPDATE",
         [id]
       );
-      
+
       if (originalRecords.length === 0) {
-        throw new Error('Stock out record not found');
+        throw new Error("Stock out record not found");
       }
-      
+
       const originalRecord = originalRecords[0];
-      
+
       // Update the stock out record
       await conn.query(
-        'UPDATE stock_out SET spare_part_id = ?, quantity = ?, unit_price = ?, date = ? WHERE id = ?',
+        "UPDATE stock_out SET spare_part_id = ?, quantity = ?, unit_price = ?, date = ? WHERE id = ?",
         [spare_part_id, quantity, unit_price, date, id]
       );
-      
+
       // Calculate quantity difference
       const quantityDiff = originalRecord.quantity - quantity;
-      
-      if (quantityDiff !== 0 || originalRecord.spare_part_id !== spare_part_id) {
+
+      if (
+        quantityDiff !== 0 ||
+        originalRecord.spare_part_id !== spare_part_id
+      ) {
         // If quantity changed or part changed, update spare parts
-        
+
         // First, revert the original transaction
         if (originalRecord.spare_part_id === spare_part_id) {
           // Same part, just adjust quantity
           await conn.query(
-            'UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?',
+            "UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?",
             [quantityDiff, spare_part_id]
           );
         } else {
           // Different part - revert original and apply new
           await conn.query(
-            'UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?',
+            "UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?",
             [originalRecord.quantity, originalRecord.spare_part_id]
           );
           await conn.query(
-            'UPDATE spare_parts SET quantity = quantity - ? WHERE id = ?',
+            "UPDATE spare_parts SET quantity = quantity - ? WHERE id = ?",
             [quantity, spare_part_id]
           );
         }
       }
-      
+
       await conn.commit();
-      res.json({ message: 'Stock out updated successfully' });
+      res.json({ message: "Stock out updated successfully" });
     } catch (error) {
       await conn.rollback();
       throw error;
@@ -292,38 +295,38 @@ app.put('/api/stock-out/:id', authenticate, async (req, res) => {
 });
 
 // Delete stock out
-app.delete('/api/stock-out/:id', authenticate, async (req, res) => {
+app.delete("/api/stock-out/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Start transaction
     const conn = await pool.getConnection();
     await conn.beginTransaction();
-    
+
     try {
       // Get the stock out record
       const [records] = await conn.query(
-        'SELECT * FROM stock_out WHERE id = ? FOR UPDATE',
+        "SELECT * FROM stock_out WHERE id = ? FOR UPDATE",
         [id]
       );
-      
+
       if (records.length === 0) {
-        throw new Error('Stock out record not found');
+        throw new Error("Stock out record not found");
       }
-      
+
       const record = records[0];
-      
+
       // Delete the record
-      await conn.query('DELETE FROM stock_out WHERE id = ?', [id]);
-      
+      await conn.query("DELETE FROM stock_out WHERE id = ?", [id]);
+
       // Update spare parts quantity (add back the stock)
       await conn.query(
-        'UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?',
+        "UPDATE spare_parts SET quantity = quantity + ? WHERE id = ?",
         [record.quantity, record.spare_part_id]
       );
-      
+
       await conn.commit();
-      res.json({ message: 'Stock out deleted successfully' });
+      res.json({ message: "Stock out deleted successfully" });
     } catch (error) {
       await conn.rollback();
       throw error;
