@@ -58,7 +58,7 @@ const Login = ({ setAuth }) => {
                 className="input input-bordered w-full"
               />
             </div>
-            <div className="flex flex-col space-y-2  mt-2mt-6">
+            <div className="flex flex-col space-y-2  mt-2mt-">
               <button type="submit" className="btn btn-primary">Login</button>
             </div>
           </form>

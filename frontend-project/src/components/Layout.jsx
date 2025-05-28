@@ -9,7 +9,7 @@ const Layout = ({ logout, user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
@@ -48,7 +48,7 @@ const Layout = ({ logout, user }) => {
               <li><Link to="/stock-in">Stock In</Link></li>
               <li><Link to="/stock-out">Stock Out</Link></li>
               <li><Link to="/reports">Reports</Link></li>
-              <li><button onClick={handleLogout}>Logout</button></li>
+              <li><button onClick={handleLogout} className=' text-error'>Logout</button></li>
             </ul>
           </div>
         </div>

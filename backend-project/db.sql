@@ -1,6 +1,7 @@
-CREATE DATABASE smis_db;
+DROP DATABASE IF EXISTS smis;
+CREATE DATABASE smis;
 
-USE smis_db;
+USE smis;
 
 -- Users table for authentication
 CREATE TABLE users (

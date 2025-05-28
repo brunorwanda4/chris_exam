@@ -75,7 +75,7 @@ const Register = ({ setAuth }) => {
                 className="input input-bordered w-full"
               />
             </div>
-            <div className="flex flex-col space-y-2  mt-2mt-6">
+            <div className="flex flex-col space-y-2  mt-2">
               <button type="submit" className="btn btn-primary">Register</button>
             </div>
           </form>
